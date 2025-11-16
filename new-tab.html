@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Tab</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        overflow: hidden;
+      }
+
+      .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        background-size: cover;
+        background-position: bottom center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        padding: 100px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 30px;
+        justify-items: center;
+        align-items: center;
+      }
+
+      .icon-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: white;
+        transition: transform 0.2s ease, filter 0.2s ease;
+      }
+
+      .icon-box {
+        width: 90px;
+        height: 90px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: background 0.2s ease;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .icon-link:hover .icon-box {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .label {
+        display: none;
+        font-size: 1rem;
+        text-align: center;
+        max-width: 120px;
+        word-wrap: break-word;
+        font-weight: 500;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      @media (max-width: 768px) {
+        .grid {
+          grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+          gap: 15px;
+        }
+
+        .icon-box {
+          width: 70px;
+          height: 70px;
+          font-size: 36px;
+        }
+
+        .label {
+          font-size: 11px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .grid {
+          grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+          gap: 12px;
+        }
+
+        .icon-box {
+          width: 60px;
+          height: 60px;
+          font-size: 32px;
+        }
+
+        .label {
+          font-size: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background" id="bg"></div>
+    <div class="container">
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <script>
+      // Background image URL (set to null to use gradient instead)
+      <!-- const backgroundImage = "file:///home/salman/Pictures/wallpapers/current-blur"; -->
+      const backgroundImage = null;
+
+      // Fallback gradient (used if backgroundImage is null)
+      <!-- const fallbackGradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'; -->
+      <!-- const fallbackGradient = 'linear-gradient(135deg, #09867b 0%, #09867b 100%)'; -->
+      const fallbackGradient = 'linear-gradient(135deg, #092421 0%, #092421 100%)';
+
+      // Places to get icons:
+      // https://www.streamlinehq.com/free?search=<query>
+      // https://ico.faviconkit.net/favicon/domain.com?sz=256
+      const sites = [
+        { label: 'WhatsApp', url: 'https://web.whatsapp.com', image: 'icons/whatsapp.svg', width: 3, height: 3 },
+        { label: 'LinkedIn', url: 'https://www.linkedin.com', image: 'icons/linkedin.svg', width: 3, height: 3 },
+        {
+          label: 'Upwork',
+          url: 'https://www.upwork.com/nx/reports/agency/',
+          image: 'icons/upwork-2.png',
+          width: 3.7,
+          height: 3.7,
+        },
+        { label: 'YouTube', url: 'https://www.youtube.com', image: 'icons/youtube.svg', width: 3.2, height: 3.2 },
+        {
+          label: 'YT Music',
+          url: 'https://music.youtube.com/playlist?list=LM',
+          image: 'icons/youtube-music.png',
+          width: 3,
+          height: 3,
+        },
+        { label: 'Reddit', url: 'https://www.reddit.com/', image: 'icons/reddit.svg', width: 3, height: 3 },
+        { label: 'Meet', url: 'https://meet.google.com/', image: 'icons/meet.svg', width: 3, height: 3 },
+        { label: 'GitHub', url: 'https://github.com', image: 'icons/github.svg', width: 3.4, height: 3.4 },
+        {
+          label: 'Sheets',
+          url: 'https://docs.google.com/spreadsheets/u/0/',
+          image: 'icons/sheets.png',
+          width: 3,
+          height: 3,
+        },
+        { label: 'ChatGPT', url: 'https://chatgpt.com/', image: 'icons/openai.svg', width: 3, height: 3 },
+        {
+          label: 'Linear',
+          url: 'https://linear.app/revopsai/projects/all',
+          image: 'icons/linear.svg',
+          width: 3,
+          height: 3,
+        },
+        {
+          label: 'ESPNcricinfo',
+          url: 'https://www.espncricinfo.com/',
+          image: 'icons/espncricinfo.png',
+          width: 2.9,
+          height: 2.9,
+        },
+        { label: 'Tapmad', url: 'https://www.tapmad.com/', image: 'icons/tapmad.jpeg', width: 2.8, height: 2.8 },
+      ];
+
+      // Set background based on configuration
+      if (backgroundImage) {
+        document.getElementById('bg').style.backgroundImage = `url('${backgroundImage}')`;
+      } else {
+        document.getElementById('bg').style.background = fallbackGradient;
+      }
+
+      const grid = document.getElementById('grid');
+
+      sites.forEach((site) => {
+        const link = document.createElement('a');
+        link.href = site.url;
+        link.className = 'icon-link';
+        link.title = site.label;
+
+        const iconBox = document.createElement('div');
+        iconBox.className = 'icon-box';
+
+        const img = document.createElement('img');
+        img.className = 'icon-img';
+        img.src = site.image;
+        img.alt = site.label;
+        img.style.width = site.width + 'rem';
+        img.style.height = site.height + 'rem';
+        img.style.objectFit = 'contain';
+        iconBox.appendChild(img);
+
+        const label = document.createElement('div');
+        label.className = 'label';
+        label.textContent = site.label;
+
+        link.appendChild(iconBox);
+        link.appendChild(label);
+        grid.appendChild(link);
+      });
+    </script>
+  </body>
+</html>
