@@ -7,7 +7,7 @@ file:///home/salman/Programming/new-tab-page/new-tab.html
 ```
 
 On Chrome it can be done at `chrome://settings/appearance`:
-![screenshot of google chrome settings page showing how to change the new tab page url](image.png)
+<img src="image.png" width="300px" alt="screenshot of google chrome settings page showing how to change the new tab page url"/>
 
 You might additionally need to use something like the [Custom New Tab URL](https://chromewebstore.google.com/detail/custom-new-tab-url/mmjbdbjnoablegbkcklggeknkfcjkjia?hl=en&pli=1) extension.
 
